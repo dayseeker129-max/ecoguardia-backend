@@ -4,15 +4,16 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ CORS CONFIGURADO PARA VERCEL
+// ✅ CORS LIBERADO (Para que acepte cualquier link de Vercel o Local)
 app.use(cors({
-  origin: ["https://ecoguardia-frontend-3bn6ms0p6-axels-projects-f808169e.vercel.app", "http://localhost:3000"],
-  credentials: true
+  origin: "*", 
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
 
-// ✅ CONEXIÓN A MONGODB ATLAS (Versión optimizada)
+// ✅ CONEXIÓN A MONGODB ATLAS (Intacta)
 const mongoURI = "mongodb+srv://axeluniversidad:AXEL2005@ac-j1ok0ko.1s967ts.mongodb.net/ecoguardian?retryWrites=true&w=majority";
 
 mongoose.connect(mongoURI)
