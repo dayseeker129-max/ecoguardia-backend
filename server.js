@@ -4,15 +4,22 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+// ✅ CORS CONFIGURADO PARA VERCEL
+app.use(cors({
+  origin: ["https://ecoguardia-frontend-3bn6ms0p6-axels-projects-f808169e.vercel.app", "http://localhost:3000"],
+  credentials: true
+}));
+
 app.use(express.json());
 
-// ✅ CONEXIÓN CORRECTA A MONGODB ATLAS
-mongoose.connect("mongodb://axeluniversidad:AXEL2005@ac-j1ok0ko-shard-00-00.1s967ts.mongodb.net:27017,ac-j1ok0ko-shard-00-01.1s967ts.mongodb.net:27017,ac-j1ok0ko-shard-00-02.1s967ts.mongodb.net:27017/ecoguardian?ssl=true&replicaSet=atlas-119onz-shard-0&authSource=admin&retryWrites=true&w=majority")
+// ✅ CONEXIÓN A MONGODB ATLAS (Versión optimizada)
+const mongoURI = "mongodb+srv://axeluniversidad:AXEL2005@ac-j1ok0ko.1s967ts.mongodb.net/ecoguardian?retryWrites=true&w=majority";
+
+mongoose.connect(mongoURI)
   .then(() => console.log("🔥 MongoDB conectado"))
   .catch(err => console.log("❌ Error Mongo:", err));
 
-// RUTAS
+// RUTAS (Intactas)
 const authRoutes = require("./routes/authroutes");
 const cardRoutes = require("./routes/cardroutes");
 
@@ -25,6 +32,7 @@ app.get("/", (req, res) => {
 });
 
 // SERVER
-app.listen(5000, () => {
-  console.log("🚀 Puerto 5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Puerto ${PORT}`);
 });
