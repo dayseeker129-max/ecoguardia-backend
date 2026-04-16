@@ -4,23 +4,15 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ CORS LIBERADO (Para que acepte cualquier link de Vercel o Local)
-app.use(cors({
-  origin: "*", 
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
-
+app.use(cors());
 app.use(express.json());
 
-// ✅ CONEXIÓN A MONGODB ATLAS (Intacta)
-const mongoURI = "mongodb+srv://axeluniversidad:AXEL2005@ac-j1ok0ko.1s967ts.mongodb.net/ecoguardian?retryWrites=true&w=majority";
-
-mongoose.connect(mongoURI)
+// ✅ CONEXIÓN CORRECTA A MONGODB ATLAS
+mongoose.connect("mongodb://axeluniversidad:AXEL2005@ac-j1ok0ko-shard-00-00.1s967ts.mongodb.net:27017,ac-j1ok0ko-shard-00-01.1s967ts.mongodb.net:27017,ac-j1ok0ko-shard-00-02.1s967ts.mongodb.net:27017/ecoguardian?ssl=true&replicaSet=atlas-119onz-shard-0&authSource=admin&retryWrites=true&w=majority")
   .then(() => console.log("🔥 MongoDB conectado"))
   .catch(err => console.log("❌ Error Mongo:", err));
 
-// RUTAS (Intactas)
+// RUTAS
 const authRoutes = require("./routes/authroutes");
 const cardRoutes = require("./routes/cardroutes");
 
@@ -33,7 +25,6 @@ app.get("/", (req, res) => {
 });
 
 // SERVER
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Puerto ${PORT}`);
+app.listen(5000, () => {
+  console.log("🚀 Puerto 5000");
 });
