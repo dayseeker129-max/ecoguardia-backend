@@ -4,27 +4,32 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+// ✅ CORS TOTAL
+app.use(cors({
+  origin: "*", 
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
 
-// ✅ CONEXIÓN CORRECTA A MONGODB ATLAS
-mongoose.connect("mongodb://axeluniversidad:AXEL2005@ac-j1ok0ko-shard-00-00.1s967ts.mongodb.net:27017,ac-j1ok0ko-shard-00-01.1s967ts.mongodb.net:27017,ac-j1ok0ko-shard-00-02.1s967ts.mongodb.net:27017/ecoguardian?ssl=true&replicaSet=atlas-119onz-shard-0&authSource=admin&retryWrites=true&w=majority")
+// ✅ CORRECCIÓN: Usar la variable de Render o el link si falla
+const mongoURI = process.env.MONGO_URI || "mongodb+srv://axeluniversidad:AXEL2005@ac-j1ok0ko.1s967ts.mongodb.net/ecoguardian?retryWrites=true&w=majority";
+
+mongoose.connect(mongoURI)
   .then(() => console.log("🔥 MongoDB conectado"))
   .catch(err => console.log("❌ Error Mongo:", err));
 
-// RUTAS
 const authRoutes = require("./routes/authroutes");
 const cardRoutes = require("./routes/cardroutes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/card", cardRoutes);
 
-// TEST
-app.get("/", (req, res) => {
-  res.send("Servidor funcionando 🚀");
-});
+app.get("/", (req, res) => res.send("Servidor funcionando 🚀"));
 
-// SERVER
-app.listen(5000, () => {
-  console.log("🚀 Puerto 5000");
+// ✅ CORRECCIÓN: Puerto dinámico para Render
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Puerto ${PORT}`);
 });
